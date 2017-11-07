@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Anglers Log</string>
+    <string name="weigth_in_kg">Weight: %1$s  kg</string>
+</resources>
