@@ -7,10 +7,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,6 +27,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +35,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
@@ -43,8 +50,6 @@ public class PostActivity extends AppCompatActivity {
 
     // Start declare_database_reg
     private DatabaseReference mDatabase;
-    // End
-
     private StorageReference mStorage;
 
     public static final String TAG = PostActivity.class.getSimpleName();
@@ -59,6 +64,7 @@ public class PostActivity extends AppCompatActivity {
     ImageView mImageView;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
+
 
 
     @Override
@@ -77,7 +83,7 @@ public class PostActivity extends AppCompatActivity {
         // Start initialize_database_ref
         mDatabase = FirebaseDatabase.getInstance().getReference("Fish");
         // End
-        mStorage = FirebaseStorage.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference().child("Photos");
 
         // Getting views
         editTextFish = (EditText) findViewById(R.id.editTextFish);
@@ -94,6 +100,7 @@ public class PostActivity extends AppCompatActivity {
                 submitPost();
             }
         });
+
     }
 
     private void submitPost(){
@@ -125,7 +132,6 @@ public class PostActivity extends AppCompatActivity {
         }
 
     }
-
 
 
 
@@ -163,17 +169,11 @@ public class PostActivity extends AppCompatActivity {
                 longitude = place.getLatLng().longitude;
                 Log.i(TAG, "Latitude is: " + latitude);
                 Log.i(TAG, "Longitude is: " + longitude);
-                Log.i(TAG, "Fuckuing qorks");
                 break;
             case 2:
-                Uri uri = data.getData();
-                StorageReference filepath = mStorage.child("Photos").child(uri.getLastPathSegment());
-                filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(PostActivity.this, "Gz.. it uploaded!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(imageBitmap);
                 break;
         }
     }
