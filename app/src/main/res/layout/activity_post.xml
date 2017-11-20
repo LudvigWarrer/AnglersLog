@@ -44,4 +44,41 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextWeight"
         app:layout_constraintHorizontal_bias="0.716" />
+
+    <Button
+        android:id="@+id/buttonAddMaps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addMaps"
+        android:text="Add maps"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintVertical_bias="0.987" />
+
+    <Button
+        android:id="@+id/buttonAddImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="dispatchTakePictureIntent"
+        android:text="Add image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintVertical_bias="0.987" />
+
+    <ImageView
+        android:id="@+id/mImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/common_full_open_on_phone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.393"
+        android:layout_marginLeft="85dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

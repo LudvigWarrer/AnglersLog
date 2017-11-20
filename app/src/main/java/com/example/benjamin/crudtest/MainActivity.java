@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             protected void populateViewHolder(FishViewHolder viewHolder, Fish model, int position) {
                 viewHolder.setTitle(model.getFishName());
                 viewHolder.setWeight(model.getWeight());
+                viewHolder.setLatitude(model.getLatitude());
+                viewHolder.setLongitude(model.getLongitude());
             }
         };
 

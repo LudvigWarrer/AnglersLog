@@ -11,15 +11,19 @@ public class Fish {
     private String fishId;
     private String fishName;
     private String weight;
+    private double latitude;
+    private double longitude;
 
     public Fish(){
         // This constructor is required!
     }
 
-    public Fish(String fishId , String fishName, String weight) {
+    public Fish(String fishId , String fishName, String weight, double latitude, double longitude) {
         this.fishId = fishId;
         this.fishName = fishName;
         this.weight = weight;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getFishId() {
@@ -33,6 +37,14 @@ public class Fish {
 
     public String getWeight() {
         return weight;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude(){
+        return longitude;
     }
 }
 
