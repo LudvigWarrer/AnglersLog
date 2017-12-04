@@ -1,5 +1,7 @@
 package com.example.benjamin.crudtest;
 
+import android.net.Uri;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -13,17 +15,19 @@ public class Fish {
     private String weight;
     private double latitude;
     private double longitude;
+    private String fileName;
 
     public Fish(){
         // This constructor is required!
     }
 
-    public Fish(String fishId , String fishName, String weight, double latitude, double longitude) {
+    public Fish(String fishId , String fishName, String weight, double latitude, double longitude, String fileName) {
         this.fishId = fishId;
         this.fishName = fishName;
         this.weight = weight;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.fileName = fileName;
     }
 
     public String getFishId() {
@@ -45,6 +49,10 @@ public class Fish {
 
     public double getLongitude(){
         return longitude;
+    }
+
+    public String getFileName(){
+        return fileName;
     }
 }
 

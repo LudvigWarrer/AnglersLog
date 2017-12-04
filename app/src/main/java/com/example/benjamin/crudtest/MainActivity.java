@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mPostList;
     private DatabaseReference mDatabase;
-
+    private StorageReference mStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         mPostList.setLayoutManager(new LinearLayoutManager(this));
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Fish");
+        mStorage = FirebaseStorage.getInstance().getReference("images");
     }
 
     @Override
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 viewHolder.setWeight(model.getWeight());
                 viewHolder.setLatitude(model.getLatitude());
                 viewHolder.setLongitude(model.getLongitude());
+                viewHolder.setFileName(model.getFileName());
             }
         };
 

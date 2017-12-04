@@ -19,6 +19,7 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private String title;
     private  double latitude;
     private double longitude;
+    private String fileName;
 
 
     public FishViewHolder(View itemView) {
@@ -49,6 +50,10 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.longitude = longitude;
     }
 
+    public void setFileName(String fileName){
+        this.fileName = fileName;
+    }
+
     // On click go to id page
     @Override
     public void onClick(View view) {
@@ -57,6 +62,7 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         intentDetail.putExtra("weight", weight);
         intentDetail.putExtra("latitude", latitude);
         intentDetail.putExtra("longitude", longitude);
+        intentDetail.putExtra("fileName", fileName);
         view.getContext().startActivity(intentDetail);
 
     }
