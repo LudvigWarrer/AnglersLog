@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Anglers Log</string>
-    <string name="weigth_in_kg">Weight: %1$s  kg</string>
+    <string name="title_activity_main"><i>Username</i> caught a <b>%1$s</b></string>
+    <string name="weigth_in_kg">Weight: <b>%1$s</b>  kg</string>
     <string name="title_activity_maps">Map</string>
     <string name="fishAdded">Fish added</string>
 </resources>

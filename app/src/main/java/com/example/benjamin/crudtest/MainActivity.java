@@ -1,61 +1,52 @@
 package com.example.benjamin.crudtest;
 
-import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
+import android.content.res.Resources;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mPostList;
+    private LinearLayoutManager mLayoutManager;
     private DatabaseReference mDatabase;
-    private StorageReference mStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_placeholder);
+
+        mLayoutManager = new LinearLayoutManager(MainActivity.this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
 
         mPostList = (RecyclerView) findViewById(R.id.post_list);
-        mPostList.setHasFixedSize(true);
-        mPostList.setLayoutManager(new LinearLayoutManager(this));
+        mPostList.setLayoutManager(mLayoutManager);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Fish");
-        mStorage = FirebaseStorage.getInstance().getReference("images");
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                    startActivity(intent);
+                }
+            });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        final Resources res = getResources();
 
         FirebaseRecyclerAdapter<Fish, FishViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Fish, FishViewHolder>(
                 Fish.class,
@@ -65,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(FishViewHolder viewHolder, Fish model, int position) {
-                viewHolder.setTitle(model.getFishName());
-                viewHolder.setWeight(model.getWeight());
+                String title = res.getString(R.string.title_activity_main, model.getFishName());
+                viewHolder.setTitle(title);
+                String weight = res.getString(R.string.weigth_in_kg, model.getWeight());
+                viewHolder.setWeight(weight);
                 viewHolder.setLatitude(model.getLatitude());
                 viewHolder.setLongitude(model.getLongitude());
                 viewHolder.setFileName(model.getFileName());
@@ -74,12 +67,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         mPostList.setAdapter(firebaseRecyclerAdapter);
-    }
-
-    // Called when user taps button
-    public void createPost(View view){
-        Intent intent = new Intent(this, PostActivity.class);
-        startActivity(intent);
     }
 }
 

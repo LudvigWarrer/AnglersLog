@@ -1,9 +1,7 @@
 package com.example.benjamin.crudtest;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,15 +19,15 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private double longitude;
     private String fileName;
 
-
+    // This is the constructor
     public FishViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
 
-        // trying to get it to work
         itemView.setOnClickListener(this);
     }
 
+    // Below are functions that are able to send data through the adapter and into the RecyclerView
     public void setTitle(String title){
         TextView post_title = (TextView) mView.findViewById(R.id.post_title);
         post_title.setText(title);
@@ -54,7 +52,7 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.fileName = fileName;
     }
 
-    // On click go to id page
+    // On click opens DetailsActivity and sends the associated data through
     @Override
     public void onClick(View view) {
         Intent intentDetail = new Intent(view.getContext(), DetailsActivity.class);

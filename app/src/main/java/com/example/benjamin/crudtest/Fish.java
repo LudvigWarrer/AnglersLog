@@ -1,7 +1,5 @@
 package com.example.benjamin.crudtest;
 
-import android.net.Uri;
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
