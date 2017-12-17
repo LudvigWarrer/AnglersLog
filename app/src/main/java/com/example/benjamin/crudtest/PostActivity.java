@@ -9,7 +9,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +38,7 @@ public class PostActivity extends AppCompatActivity {
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int TAKE_PHOTO_REQUEST = 2;
 
-    // Start declare_database_reg
+    // Declare database
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
 
@@ -68,7 +67,7 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.placeholder);
+        setContentView(R.layout.activity_post);
 
         // Start initialize_database_ref
         mDatabase = FirebaseDatabase.getInstance().getReference("Fish");
@@ -90,11 +89,16 @@ public class PostActivity extends AppCompatActivity {
                 submitPost();
             }
         });
-
         buttonAddImg.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 dispatchTakePictureIntent();
+            }
+        });
+        buttonAddMaps.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                addMaps();
             }
         });
 
@@ -110,7 +114,6 @@ public class PostActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        Log.d(TAG, "CreateImageFile is here " + storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -121,7 +124,6 @@ public class PostActivity extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-                Log.d(TAG, "photoFile was created");
             } catch (IOException ex) {
             }
             if (photoFile != null) {
@@ -140,22 +142,16 @@ public class PostActivity extends AppCompatActivity {
         switch (requestCode){
             case TAKE_PHOTO_REQUEST:
                 if(resultCode == RESULT_OK){
-                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     File f = new File(mCurrentPhotoPath);
                     Uri contentUri = Uri.fromFile(f);
-                    mediaScanIntent.setData(contentUri);
                     mImageView.setImageURI(contentUri);
                     break;
                 }
             case PLACE_PICKER_REQUEST:
                 if(resultCode == RESULT_OK) {
                     Place place = PlacePicker.getPlace(PostActivity.this, data);
-                    Log.i(TAG, place.getName().toString());
                     latitude = place.getLatLng().latitude;
                     longitude = place.getLatLng().longitude;
-                    Log.i(TAG, "Latitude is: " + latitude);
-                    Log.i(TAG, "Longitude is: " + longitude);
-                    Log.i(TAG, "Fuckuing qorks");
                     break;
                 }
         }
@@ -163,15 +159,19 @@ public class PostActivity extends AppCompatActivity {
 
     private void galleryAddPic() {
         bar = (ProgressBar)findViewById(R.id.indeterminateBar);
-        bar.setVisibility(View.VISIBLE);
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
+        File f;
+        try {
+            f = new File(mCurrentPhotoPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(PostActivity.this, "Please fill out everything and try again", Toast.LENGTH_LONG).show();
+            return;
+        }
         Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
         mImageView.setImageURI(contentUri);
         StorageReference storage = mStorage.child("images/"+contentUri.getLastPathSegment());
         UploadTask uploadTask = storage.putFile(contentUri);
+        bar.setVisibility(View.VISIBLE);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -182,11 +182,9 @@ public class PostActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 downloadURL = String.valueOf(taskSnapshot.getDownloadUrl());
                 fileName = taskSnapshot.getMetadata().getName();
-                Log.d(TAG, "fileName: " + fileName + " Is done uploading");
-
                 String fishName = editTextFish.getText().toString().trim();
                 String fishWeight = editTextWeight.getText().toString().trim();
-                // fishName and fishWeight is required
+
                 if(!TextUtils.isEmpty(fishName) &&
                         !TextUtils.isEmpty(fishName) &&
                         (fileName != null) &&
@@ -194,9 +192,7 @@ public class PostActivity extends AppCompatActivity {
                         (longitude != 0)){
 
                     String id = mDatabase.push().getKey();
-
                     Fish fish = new Fish(id, fishName, fishWeight, latitude, longitude, fileName);
-
                     mDatabase.child(id).setValue(fish);
 
                     editTextFish.setText("");
@@ -216,7 +212,7 @@ public class PostActivity extends AppCompatActivity {
         galleryAddPic();
     }
 
-    public void addMaps(View view){
+    public void addMaps(){
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             Intent intent = builder.build(PostActivity.this);

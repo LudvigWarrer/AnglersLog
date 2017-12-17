@@ -16,18 +16,18 @@ import com.google.firebase.storage.StorageReference;
  */
 
 public class DetailsActivity extends AppCompatActivity {
-    public static final String TAG = PostActivity.class.getSimpleName();
-    double lat;
-    double lon;
+    double latitude;
+    double longitude;
     String fileName;
+    String titleText;
+    String weightText;
     ImageView imageView;
     TextView title;
     TextView weight;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.details_placeholder);
+        setContentView(R.layout.activity_details);
 
         title = (TextView)findViewById(R.id.textViewTitle);
         weight = (TextView)findViewById(R.id.textViewWeight);
@@ -35,29 +35,26 @@ public class DetailsActivity extends AppCompatActivity {
 
         Intent intentDetailn = getIntent();
         Bundle b = intentDetailn.getExtras();
-        String t = (String) b.get("title");
-        String w = (String) b.get("weight");
-        lat = (double) b.get("latitude");
-        lon = (double) b.get("longitude");
+        titleText = (String) b.get("title");
+        weightText = (String) b.get("weight");
+        latitude = (double) b.get("latitude");
+        longitude = (double) b.get("longitude");
         fileName = (String) b.get("fileName");
 
-        title.setText(t);
-        weight.setText(w);
+        this.title.setText(titleText);
+        this.weight.setText(weightText);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://crudtest-5e359.appspot.com");
         StorageReference pathRef = storageRef.child("images/" + fileName);
 
         Glide.with(this).using(new FirebaseImageLoader()).load(pathRef).into(imageView);
-
     }
-
 
     public void showMaps(View view){
         Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra("latitude", lat);
-        intent.putExtra("longitude", lon);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
-
 }

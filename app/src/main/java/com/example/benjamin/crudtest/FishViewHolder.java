@@ -28,29 +28,30 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     // Below are functions that are able to send data through the adapter and into the RecyclerView
-    public void setTitle(String title){
+    void setTitle(String title){
         TextView post_title = (TextView) mView.findViewById(R.id.post_title);
         post_title.setText(title);
         this.title = title;
     };
 
-    public void setWeight(String weight){
+    void setWeight(String weight){
         TextView post_weight = (TextView) mView.findViewById(R.id.post_weight);
         post_weight.setText(weight);
         this.weight = weight;
     }
 
-    public void setLatitude(double latitude){
+    void setLatitude(double latitude){
         this.latitude = latitude;
     }
 
-    public void setLongitude(double longitude){
+    void setLongitude(double longitude){
         this.longitude = longitude;
     }
 
-    public void setFileName(String fileName){
+    void setFileName(String fileName){
         this.fileName = fileName;
     }
+
 
     // On click opens DetailsActivity and sends the associated data through
     @Override
@@ -62,7 +63,6 @@ public class FishViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         intentDetail.putExtra("longitude", longitude);
         intentDetail.putExtra("fileName", fileName);
         view.getContext().startActivity(intentDetail);
-
     }
 
 }

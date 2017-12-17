@@ -7,7 +7,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 
 @IgnoreExtraProperties
-public class Fish {
+class Fish {
     private String fishId;
     private String fishName;
     private String weight;
@@ -19,7 +19,7 @@ public class Fish {
         // This constructor is required!
     }
 
-    public Fish(String fishId , String fishName, String weight, double latitude, double longitude, String fileName) {
+    Fish(String fishId, String fishName, String weight, double latitude, double longitude, String fileName) {
         this.fishId = fishId;
         this.fishName = fishName;
         this.weight = weight;
@@ -28,28 +28,27 @@ public class Fish {
         this.fileName = fileName;
     }
 
-    public String getFishId() {
+    String getFishId() {
         return fishId;
     }
 
-    public String getFishName() {
+    String getFishName() {
         return fishName;
     }
 
-
-    public String getWeight() {
+    String getWeight() {
         return weight;
     }
 
-    public double getLatitude() {
+    double getLatitude() {
         return latitude;
     }
 
-    public double getLongitude(){
+    double getLongitude(){
         return longitude;
     }
 
-    public String getFileName(){
+    String getFileName(){
         return fileName;
     }
 }

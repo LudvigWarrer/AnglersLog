@@ -4,4 +4,12 @@
     <string name="weigth_in_kg">Weight: <b>%1$s</b>  kg</string>
     <string name="title_activity_maps">Map</string>
     <string name="fishAdded">Fish added</string>
+    <string name="mainTitle">Newest posts</string>
+    <string name="createTitle">Create new post</string>
+    <string name="detailsTitle">Showing post</string>
+    <string name="enter_fish_name">Enter fish name</string>
+    <string name="enter_fish_weight">Enter fish weight</string>
+    <string name="add_image">Add image</string>
+    <string name="add_maps">Add maps</string>
+    <string name="add_fish">Add fish</string>
 </resources>
